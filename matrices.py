@@ -20,6 +20,10 @@ scaling = np.array([
 cos_value = math.cos(0.2)
 sin_value = math.sin(0.2)
 
+rotation_x = np.array([
+    []
+])
+
 rotation = np.array([
     [pow(cos_value,2), -sin_value, cos_value * sin_value, 0],
     [cos_value * sin_value, cos_value, pow(sin_value,2), 0],
@@ -29,6 +33,8 @@ rotation = np.array([
 
 m_model = np.matmul(rotation, np.matmul(scaling,translation))
 
+print(f"m_model: {m_model}")
+
 points = np.array([
     [0, -1.5, -1, 1, 1.5, 0, -3, -2, 2, 3],
     [1, 0.5, -1, -1, 0.5, 2, 1, -2, -2, 1],
@@ -37,6 +43,8 @@ points = np.array([
 ])
 
 transformed_points = np.matmul(m_model, points)
+
+print(f"transformed points: {transformed_points}")
 
 p_1 = np.array([transformed_points[0][0], transformed_points[1][0], transformed_points[2][0]])
 p_2 = np.array([transformed_points[0][1], transformed_points[1][1], transformed_points[2][1]])
@@ -51,14 +59,22 @@ v1 = p_2 - p_1
 v2 = p_5 - p_1
 v3 = p_6 - p_1
 v4 = p_3 - p_1
+print(f"v1: {v1}")
+print(f"v2: {v2}")
+print(f"v3: {v3}")
+print(f"v4: {v4}")
+
+## Question 2c
 
 v1_v2_dot_product = np.dot(v1, v2)
 v1_v3_dot_product = np.dot(v1, v3)
 v2_v3_dot_product = np.dot(v2, v3)
+print(f"v2 v3 dot product: {v2_v3_dot_product}")
 
-## Question 2c
+print(f"v2 v4 cross product: {np.cross(v2,v4)}")
 
 scalar_trip = np.dot(v1, np.cross(v2,v4))
+print(f"Scalar triple product: {scalar_trip}")
 
 ## Question 2d
 
