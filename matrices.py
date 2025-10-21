@@ -20,18 +20,23 @@ scaling = np.array([
 cos_value = math.cos(0.2)
 sin_value = math.sin(0.2)
 
-rotation_x = np.array([
-    []
+rotation_z = np.array([
+    [cos_value, -sin_value, 0, 0],
+    [sin_value, cos_value, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1],
 ])
 
-rotation = np.array([
-    [pow(cos_value,2), -sin_value, cos_value * sin_value, 0],
-    [cos_value * sin_value, cos_value, pow(sin_value,2), 0],
+rotation_y = np.array([
+    [cos_value, 0, sin_value, 0],
+    [0, 1, 0, 0],
     [-sin_value, 0, cos_value, 0],
     [0, 0, 0, 1],
 ])
 
-m_model = np.matmul(rotation, np.matmul(scaling,translation))
+rotation_overall = np.matmul(rotation_z, rotation_y)
+
+m_model = np.matmul(rotation_overall, np.matmul(scaling,translation))
 
 print(f"m_model: {m_model}")
 
@@ -53,6 +58,13 @@ p_4 = np.array([transformed_points[0][3], transformed_points[1][3], transformed_
 p_5 = np.array([transformed_points[0][4], transformed_points[1][4], transformed_points[2][4]])
 p_6 = np.array([transformed_points[0][5], transformed_points[1][5], transformed_points[2][5]])
 
+print(f'point1: {p_1}')
+print(f'point2: {p_2}')
+print(f'point3: {p_3}')
+print(f'point4: {p_4}')
+print(f'point5: {p_5}')
+print(f'point6: {p_6}')
+
 ## Question 2
 
 v1 = p_2 - p_1
@@ -69,6 +81,8 @@ print(f"v4: {v4}")
 v1_v2_dot_product = np.dot(v1, v2)
 v1_v3_dot_product = np.dot(v1, v3)
 v2_v3_dot_product = np.dot(v2, v3)
+print(f"v1 v2 dot product: {v1_v2_dot_product}")
+print(f"v1 v3 dot product: {v1_v3_dot_product}")
 print(f"v2 v3 dot product: {v2_v3_dot_product}")
 
 print(f"v2 v4 cross product: {np.cross(v2,v4)}")
@@ -88,39 +102,42 @@ else:
 translation_inverse = np.array([
     [1,0,0,0],
     [0,1,0,0],
-    [0,0,1,-14],
+    [0,0,1,-12],
     [0,0,0,1]
 ])
 
-theta_c = 0.19
-phi_c = 0.21
+theta_c = 0.23
+phi_c = 0.19
 
-rotationX_inverse = np.array([
+rotationX = np.array([
     [1,0,0,0],
-    [0,math.cos(theta_c),math.sin(theta_c),0],
-    [0,-math.sin(theta_c),math.cos(theta_c),0],
+    [0,math.cos(theta_c), -math.sin(theta_c),0],
+    [0,math.sin(theta_c), math.cos(theta_c),0],
     [0,0,0,1]
 ])
 
-rotationY_inverse = np.array([
-    [math.cos(phi_c),0,-math.sin(phi_c),0],
+rotationY = np.array([
+    [math.cos(phi_c),0,math.sin((phi_c)),0],
     [0,1,0,0],
-    [math.sin(phi_c),0,math.cos(phi_c),0],
+    [-math.sin(phi_c),0,math.cos(phi_c),0],
     [0,0,0,1]
 ])
+
+rotationX_inverse = np.linalg.inv(rotationX)
+rotationY_inverse = np.linalg.inv(rotationY)
 
 m_view = np.matmul(translation_inverse, np.matmul(rotationX_inverse, rotationY_inverse))
 print(f"m_view: {m_view}")
 
 ## Question 3c
 
-m_model_view = np.matmul(m_model, m_view)
+m_model_view = np.matmul(m_view, m_model)
 print(f"m_model_view: {m_model_view}")
 
 ## Question 3d
 
-view_points = np.matmul(m_model_view, points)
-print(f"view_points: {view_points}")
+model_view_points = np.matmul(m_model_view, points)
+print(f"model_view_points: {model_view_points}")
 
 ## Question 4
 m_model_view_inverse = np.linalg.inv(m_model_view)
@@ -152,5 +169,7 @@ print(f'normal: {n}')
 points = np.array([p_1,p_2,p_3,p_4,p_5])
 
 centre = np.mean(points, axis=0)
-
 print(f"centre: {centre}")
+
+lightpoint = centre + n
+print(f"lightpoint: {lightpoint}")
