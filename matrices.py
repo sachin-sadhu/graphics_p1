@@ -121,3 +121,36 @@ print(f"m_model_view: {m_model_view}")
 
 view_points = np.matmul(m_model_view, points)
 print(f"view_points: {view_points}")
+
+## Question 4
+m_model_view_inverse = np.linalg.inv(m_model_view)
+print(f"m_model_view_inverse: {m_model_view_inverse}")
+
+gamma = 0.22
+
+rotation = np.array([
+    [math.cos(gamma),-math.sin(gamma),0,0],
+    [math.sin(gamma),math.cos(gamma),0,0],
+    [0,0,1,0],
+    [0,0,0,1],
+])
+
+inplace_rotation = np.matmul(m_model_view, np.matmul(rotation, m_model_view_inverse))
+print(f"inplace rotation: {inplace_rotation}")
+
+## Question 5
+
+# Calculate normal vector to the plane.
+
+v1 = p_2 - p_1
+v2 = p_5 - p_1
+
+n = np.cross(v1,v2)
+
+print(f'normal: {n}')
+
+points = np.array([p_1,p_2,p_3,p_4,p_5])
+
+centre = np.mean(points, axis=0)
+
+print(f"centre: {centre}")
