@@ -57,6 +57,10 @@ p_3 = np.array([transformed_points[0][2], transformed_points[1][2], transformed_
 p_4 = np.array([transformed_points[0][3], transformed_points[1][3], transformed_points[2][3]])
 p_5 = np.array([transformed_points[0][4], transformed_points[1][4], transformed_points[2][4]])
 p_6 = np.array([transformed_points[0][5], transformed_points[1][5], transformed_points[2][5]])
+p_7 = np.array([transformed_points[0][6], transformed_points[1][6], transformed_points[2][6]])
+p_8 = np.array([transformed_points[0][7], transformed_points[1][7], transformed_points[2][7]])
+p_9 = np.array([transformed_points[0][8], transformed_points[1][8], transformed_points[2][8]])
+p_10 = np.array([transformed_points[0][9], transformed_points[1][9], transformed_points[2][9]])
 
 print(f'point1: {p_1}')
 print(f'point2: {p_2}')
@@ -173,3 +177,18 @@ print(f"centre: {centre}")
 
 lightpoint = centre + n
 print(f"lightpoint: {lightpoint}")
+
+p5_light = p_5 - lightpoint
+print(f"p5 lightpoint: {p5_light}")
+
+normalised_p5_light = p5_light / np.linalg.norm(p5_light)
+print(f"normalised p5 light: {normalised_p5_light}")
+
+normalised_n = n / np.linalg.norm(n)
+print(f"normalised normal: {normalised_n}")
+
+r = 2 * np.dot(normalised_p5_light,normalised_n) * normalised_n - normalised_p5_light
+print(f"r: {r}")
+
+eye_point = p_5 + r
+print(f"eye point: {eye_point}")
